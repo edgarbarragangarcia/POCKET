@@ -1,0 +1,22 @@
+CAMPAIGNMANAGER
+Gestión inteligente de campañas
+
+¡Bienvenido a CampaignManager! 🎉
+
+Gracias por registrarte en nuestra plataforma. Para completar tu registro y comenzar a crear campañas increíbles, necesitamos que confirmes tu dirección de correo electrónico.
+
+CONFIRMAR MI CUENTA:
+{{ .ConfirmationURL }}
+
+¿No puedes hacer clic en el enlace?
+Copia y pega esta URL en tu navegador:
+{{ .ConfirmationURL }}
+
+NOTA DE SEGURIDAD:
+Este enlace expirará en 24 horas por tu seguridad. Si no solicitaste esta cuenta, puedes ignorar este correo.
+
+---
+CampaignManager
+Plataforma de gestión de campañas digitales
+
+Este correo fue enviado a {{ .Email }}. Si tienes preguntas, contáctanos.

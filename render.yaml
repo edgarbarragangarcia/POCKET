@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: campa-as
+    env: node
+    plan: free
+    buildCommand: 'npm install && npm run build'
+    startCommand: 'npm start'
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      # Agrega aquí cualquier otra variable de entorno que necesites
