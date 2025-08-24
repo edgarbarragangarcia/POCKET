@@ -29,7 +29,7 @@ export default function HomePage() {
               className="h-8 w-8"
             />
             <span className="text-xl font-bold tracking-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold">POCKET</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold text-4xl">POCKET</span>
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-6 homepage-nav">
@@ -108,7 +108,7 @@ export default function HomePage() {
               className="h-8 w-8"
             />
             <span className="text-lg font-bold">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-500 font-bold">POCKET</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-500 font-bold text-3xl">POCKET</span>
             </span>
           </div>
           <p className="text-center text-sm text-muted-foreground">
