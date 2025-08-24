@@ -77,7 +77,7 @@ export function FeatureSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-3xl md:text-4xl font-bold mb-4"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
           >
             Características principales
           </motion.h2>
@@ -86,7 +86,7 @@ export function FeatureSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl text-muted-foreground max-w-3xl mx-auto"
+            className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto"
           >
             Nuestra plataforma todo-en-uno te ofrece herramientas avanzadas para crear
             y gestionar campañas publicitarias exitosas.
@@ -129,10 +129,10 @@ export function FeatureSection() {
             <div className="glassmorphic rounded-xl overflow-hidden p-6 md:p-8">
               <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4">
                     Analíticas detalladas para <span className="neon-text-blue">optimizar</span> resultados
                   </h3>
-                  <p className="text-muted-foreground mb-6">
+                  <p className="text-base md:text-lg text-muted-foreground mb-6">
                     Visualiza el rendimiento de tus campañas con gráficos interactivos
                     y métricas clave para identificar oportunidades de mejora y maximizar tu ROI.
                   </p>
@@ -152,7 +152,7 @@ export function FeatureSection() {
                   </div>
                 </div>
                 <div className="relative">
-                  <Image 
+                  <img 
                     src="/images/analytics-preview.png"
                     alt="Analíticas detalladas"
                     width={600}

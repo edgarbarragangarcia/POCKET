@@ -59,13 +59,13 @@ export default function ForgotPasswordPage() {
                     className="h-8 w-8"
                   />
                   <span className="text-xl font-bold tracking-tight">
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold text-4xl">POCKET</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold text-3xl sm:text-4xl">POCKET</span>
                   </span>
                 </div>
               </Link>
               
-              <h1 className="text-2xl font-bold">Recuperar Contraseña</h1>
-              <p className="text-muted-foreground mt-2">
+              <h1 className="text-2xl md:text-3xl font-bold">Recuperar Contraseña</h1>
+              <p className="text-base md:text-lg text-muted-foreground mt-2">
                 {!emailSent 
                   ? "Ingresa tu correo electrónico para recibir un enlace de recuperación."
                   : "Se ha enviado un enlace a tu correo electrónico."}

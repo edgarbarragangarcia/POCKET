@@ -45,7 +45,7 @@ function CheckEmailContent() {
                   className="h-8 w-8"
                 />
                 <span className="text-xl font-bold tracking-tight">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold text-4xl">POCKET</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold text-3xl sm:text-4xl">POCKET</span>
                 </span>
               </div>
             </Link>
@@ -54,8 +54,8 @@ function CheckEmailContent() {
               <MailCheck className="h-8 w-8 text-primary" />
             </div>
 
-            <h1 className="text-2xl font-bold mb-2">Verifica tu correo electrónico</h1>
-            <p className="text-muted-foreground mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">Verifica tu correo electrónico</h1>
+            <p className="text-base md:text-lg text-muted-foreground mb-6">
               Hemos enviado un enlace de confirmación a <br />
               <strong className="text-foreground">{email || 'tu correo'}</strong>.
             </p>

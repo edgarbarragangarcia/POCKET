@@ -87,8 +87,8 @@ export default function LoginPage() {
                   </span>
                 </div>
               </Link>
-              <h1 className="text-2xl font-bold">Iniciar Sesión</h1>
-              <p className="text-muted-foreground mt-2">
+              <h1 className="text-2xl md:text-3xl font-bold">Iniciar Sesión</h1>
+              <p className="text-base md:text-lg text-muted-foreground mt-2">
                 Bienvenido de vuelta. Ingresa tus credenciales para continuar.
               </p>
             </div>

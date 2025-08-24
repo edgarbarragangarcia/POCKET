@@ -55,8 +55,8 @@ export function TestimonialsSection() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Lo que dicen nuestros clientes</h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Descubre cómo empresas de diferentes sectores han mejorado sus resultados utilizando nuestra plataforma.
           </p>
         </motion.div>
@@ -110,10 +110,10 @@ export function TestimonialsSection() {
         >
           <div className="grid md:grid-cols-3 gap-8 items-center">
             <div className="md:col-span-2">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4">
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-4">
                 Más de <span className="neon-text-blue">2,000</span> empresas confían en nosotros
               </h3>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-base md:text-lg text-muted-foreground mb-6">
                 Desde startups hasta multinacionales, nuestras soluciones se adaptan a empresas de todos los tamaños y sectores.
               </p>
             </div>

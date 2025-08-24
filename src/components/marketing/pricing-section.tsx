@@ -95,8 +95,8 @@ export function PricingSection() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Planes adaptados a tus necesidades</h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Planes adaptados a tus necesidades</h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Elige el plan que mejor se adapte a tu empresa y escala a medida que creces.
           </p>
           
@@ -116,7 +116,7 @@ export function PricingSection() {
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {plans.map((plan, index) => (
             <motion.div 
               key={plan.name}

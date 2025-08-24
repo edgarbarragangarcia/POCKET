@@ -29,16 +29,16 @@ export function HeroSection() {
               </div>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-center lg:text-left">
               Lleva tus <span className="neon-text-blue">campañas</span> al siguiente nivel
             </h1>
             
-            <p className="text-lg md:text-xl text-muted-foreground max-w-xl">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-xl text-center lg:text-left">
               Crea, gestiona y analiza tus campañas publicitarias con herramientas avanzadas 
               y asistencia de IA para maximizar tu impacto y retorno de inversión.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center lg:justify-start">
               <Button size="lg" asChild className="neon-button">
                 <Link href="/register">Empezar gratis</Link>
               </Button>
@@ -47,7 +47,7 @@ export function HeroSection() {
               </Button>
             </div>
             
-            <div className="flex items-center gap-4 mt-6">
+            <div className="flex items-center gap-4 mt-6 justify-center lg:justify-start">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((id) => (
                   <div 
@@ -72,13 +72,12 @@ export function HeroSection() {
           >
             <div className="neumorphic-light dark:neumorphic-dark p-1 md:p-3 rounded-2xl relative z-10">
               <div className="glassmorphic rounded-xl overflow-hidden">
-                <Image
+                <img
                   src="/images/dashboard-preview.png"
                   alt="Dashboard Preview"
                   width={800}
                   height={500}
                   className="w-full h-auto"
-                  priority
                 />
               </div>
             </div>

@@ -92,8 +92,8 @@ export default function RegisterPage() {
                   </span>
                 </div>
               </Link>
-              <h1 className="text-2xl font-bold">Crear una cuenta</h1>
-              <p className="text-muted-foreground mt-2">
+              <h1 className="text-2xl md:text-3xl font-bold">Crear una cuenta</h1>
+              <p className="text-base md:text-lg text-muted-foreground mt-2">
                 Regístrate para comenzar a gestionar tus campañas.
               </p>
             </div>

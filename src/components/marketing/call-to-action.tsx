@@ -24,10 +24,10 @@ export function CallToAction() {
           </div>
 
           <div className="glassmorphic p-8 md:p-12 lg:p-16 rounded-2xl text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-center">
               Lleva tus campañas al <span className="neon-text-blue">siguiente nivel</span>
             </h2>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 text-center">
               Comienza hoy mismo y descubre cómo nuestra plataforma puede transformar tu estrategia de marketing.
             </p>
             
