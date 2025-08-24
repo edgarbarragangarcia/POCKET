@@ -6,6 +6,7 @@ import { CaretSortIcon, CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons
 import { Building2, LogOut, Settings, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTenant } from "@/lib/tenant-context"
+import { createLogger } from "@/lib/logger"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -52,6 +53,7 @@ export function TenantSwitcher({ className }: TenantSwitcherProps) {
   const [showNewTenantDialog, setShowNewTenantDialog] = React.useState(false)
   const { currentTenant, tenants, switchTenant, createTenant } = useTenant()
   const router = useRouter()
+  const logger = createLogger('TenantSwitcher')
 
   if (!currentTenant) {
     return null
@@ -161,6 +163,7 @@ export function TenantMenu({ className }: TenantMenuProps) {
   const { signOut } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
+  const logger = createLogger('TenantMenu')
 
   if (!currentTenant) {
     return null
@@ -218,7 +221,7 @@ export function TenantMenu({ className }: TenantMenuProps) {
                 description: "Has cerrado sesión exitosamente.",
               })
             } catch (error) {
-              console.error("Error signing out:", error)
+              logger.error('Error signing out', error)
               toast({
                 title: "Error",
                 description: "No se pudo cerrar la sesión. Inténtalo de nuevo.",
@@ -246,6 +249,7 @@ function NewTenantForm({ onClose }: NewTenantFormProps) {
   const [isLoading, setIsLoading] = React.useState(false)
   const { createTenant } = useTenant()
   const { toast } = useToast()
+  const logger = createLogger('NewTenantForm')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -270,7 +274,7 @@ function NewTenantForm({ onClose }: NewTenantFormProps) {
       })
       onClose()
     } catch (error) {
-      console.error("Error creating tenant:", error)
+      logger.error('Error creating tenant', error)
     } finally {
       setIsLoading(false)
     }

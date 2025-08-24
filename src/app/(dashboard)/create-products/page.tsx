@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createLogger } from '@/lib/logger';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/lib/auth-context';
@@ -9,6 +10,7 @@ import { useAuth } from '@/lib/auth-context';
 export default function CreateProductsPage() {
   const { user } = useAuth();
   const supabase = createClientComponentClient();
+    const logger = createLogger('CreateProducts');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -30,7 +32,7 @@ export default function CreateProductsPage() {
         .limit(1);
 
       if (orgError) {
-        console.error('Error fetching organizations:', orgError);
+        logger.error('Error fetching organizations', orgError);
         setMessage('❌ Error al obtener organizaciones');
         return;
       }
@@ -41,7 +43,7 @@ export default function CreateProductsPage() {
       }
 
       const organizationId = organizations[0].id;
-      console.log(`Using organization: ${organizations[0].name} (${organizationId})`);
+      logger.debug(`Using organization: ${organizations[0].name} (${organizationId})`);
 
       // Check if products already exist
       const { data: existingProducts } = await supabase
@@ -101,16 +103,16 @@ export default function CreateProductsPage() {
         .select();
 
       if (error) {
-        console.error('Error inserting products:', error);
+        logger.error('Error inserting products', error);
         setMessage('❌ Error al crear productos: ' + error.message);
         return;
       }
 
       setMessage(`✅ ¡Productos creados exitosamente! Se crearon ${data.length} productos.`);
-      console.log('Products created:', data);
+      logger.info('Products created', data);
 
     } catch (error) {
-      console.error('Unexpected error:', error);
+      logger.error('Unexpected error', error);
       setMessage('❌ Error inesperado: ' + (error as Error).message);
     } finally {
       setLoading(false);
@@ -166,11 +168,11 @@ export default function CreateProductsPage() {
           {message.includes('✅') && (
             <div className="pt-4">
               <Button 
-                onClick={() => window.location.href = '/campaigns'}
+                onClick={() => window.location.href = '/dashboard'}
                 variant="outline"
                 className="w-full"
               >
-                Ir al Constructor de Campañas
+                Ir al Dashboard
               </Button>
             </div>
           )}

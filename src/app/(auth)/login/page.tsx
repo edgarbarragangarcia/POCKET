@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { createLogger } from '@/lib/logger'
 import Link from "next/link"
 import Image from "next/image"
 import { useAuth } from "@/lib/auth-context"
@@ -21,6 +22,7 @@ export default function LoginPage() {
   const { signIn, resendConfirmationEmail } = useAuth()
   const { toast } = useToast()
   const router = useRouter()
+  const logger = createLogger('Login')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -44,7 +46,7 @@ export default function LoginPage() {
       if (error.message === "EMAIL_NOT_CONFIRMED") {
         setIsEmailNotConfirmed(true)
       }
-      console.error("Login error:", error)
+      logger.error('Login error', error)
     } finally {
       setLoading(false)
     }
@@ -55,7 +57,7 @@ export default function LoginPage() {
       setResendingEmail(true)
       await resendConfirmationEmail(email)
     } catch (error) {
-      console.error("Error resending confirmation email:", error)
+      logger.error('Error resending confirmation email', error)
     } finally {
       setResendingEmail(false)
     }
@@ -81,7 +83,7 @@ export default function LoginPage() {
                     className="h-8 w-8"
                   />
                   <span className="text-xl font-bold tracking-tight">
-                    Campaign<span className="neon-text-blue">Manager</span>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold">POCKET</span>
                   </span>
                 </div>
               </Link>

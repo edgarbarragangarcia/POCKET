@@ -23,16 +23,16 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: 'Campaign Manager | Plataforma SaaS para gestión de campañas publicitarias',
+  title: 'POCKET | Plataforma SaaS para gestión de campañas publicitarias',
   description: 'Plataforma SaaS para creación, gestión y análisis de campañas publicitarias con herramientas avanzadas y asistencia de IA',
   keywords: 'campañas publicitarias, marketing digital, SaaS, analítica de campañas, gestión de publicidad',
   authors: [
     {
       name: 'Edgar Barragan',
-      url: 'https://campaignmanager.app',
+      url: 'https://pocket.app',
     }
   ],
-  creator: 'Campaign Manager Team',
+  creator: 'POCKET Team',
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',

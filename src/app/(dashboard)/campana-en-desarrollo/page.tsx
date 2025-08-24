@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, CheckCircle, Clock, Smartphone, Globe, Newspaper, Users, Play, Pause, Settings, Send } from 'lucide-react';
 import Link from 'next/link';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createLogger } from '@/lib/logger';
 
 interface CampaignData {
   modules?: any[];
@@ -129,13 +130,14 @@ export default function CampanaEnDesarrolloPage() {
   const [loading, setLoading] = useState(true);
   
   const supabase = createClientComponentClient();
+  const logger = createLogger('CampanaEnDesarrollo');
 
   // Function to fetch organization data from Supabase (filtered by canvas selections)
   const fetchOrganizationData = async (organizationId: string, canvasData: CampaignData) => {
     try {
       setLoading(true);
-      console.log('🔍 Fetching organization data for ID:', organizationId);
-      console.log('📋 Canvas data for filtering:', canvasData);
+      logger.debug('Fetching organization data for ID:', organizationId);
+      logger.debug('Canvas data for filtering:', canvasData);
       
       // Fetch organization (always fetch this)
       const { data: orgData, error: orgError } = await supabase
@@ -145,65 +147,53 @@ export default function CampanaEnDesarrolloPage() {
         .single();
       
       if (orgError) {
-        console.error('Error fetching organization:', orgError);
+        logger.error('Error fetching organization', orgError);
       } else {
-        console.log('✅ Organization data:', orgData);
+        logger.debug('Organization data loaded', orgData);
         setOrganization(orgData);
       }
       
       // Extract IDs from canvas data
-      console.log('📊 Extracting IDs from canvas data:');
-      console.log('  - canvasData.userPersonas:', canvasData.userPersonas);
-      console.log('  - canvasData.products:', canvasData.products);
-      console.log('  - canvasData.contentModules:', canvasData.contentModules);
-      console.log('  - canvasData.canvasModules:', canvasData.canvasModules);
+      logger.debug('Extracting IDs from canvas data', {
+        userPersonas: canvasData.userPersonas,
+        products: canvasData.products,
+        contentModules: canvasData.contentModules,
+        canvasModules: canvasData.canvasModules
+      });
       
       // Debug: Log detailed structure of canvasModules
-      console.log('🔍 Checking canvasModules arrays:');
-      console.log('  - userPersonas exists:', !!canvasData.canvasModules?.userPersonas);
-      console.log('  - userPersonas length:', canvasData.canvasModules?.userPersonas?.length);
-      console.log('  - content exists:', !!canvasData.canvasModules?.content);
-      console.log('  - content length:', canvasData.canvasModules?.content?.length);
+      logger.debug('Checking canvasModules arrays', {
+        userPersonasExists: !!canvasData.canvasModules?.userPersonas,
+        userPersonasLength: canvasData.canvasModules?.userPersonas?.length,
+        contentExists: !!canvasData.canvasModules?.content,
+        contentLength: canvasData.canvasModules?.content?.length
+      });
       
       if (canvasData.canvasModules?.userPersonas && canvasData.canvasModules.userPersonas.length > 0) {
-        console.log('🔍 User Personas in canvasModules:');
-        canvasData.canvasModules.userPersonas.forEach((persona, index) => {
-          console.log(`  Persona ${index}:`, persona);
-          console.log(`    - id: ${persona.id}`);
-          console.log(`    - userPersonaId: ${persona.userPersonaId}`);
-          console.log(`    - canvasId: ${persona.canvasId}`);
-        });
+        logger.debug('User Personas in canvasModules', canvasData.canvasModules.userPersonas);
       } else {
-        console.log('❌ No userPersonas found or array is empty');
+        logger.warn('No userPersonas found or array is empty');
       }
       
       if (canvasData.canvasModules?.content && canvasData.canvasModules.content.length > 0) {
-        console.log('🔍 Content in canvasModules:');
-        canvasData.canvasModules.content.forEach((content, index) => {
-          console.log(`  Content ${index}:`, content);
-          console.log(`    - id: ${content.id}`);
-          console.log(`    - contentId: ${content.contentId}`);
-          console.log(`    - canvasId: ${content.canvasId}`);
-        });
+        logger.debug('Content in canvasModules', canvasData.canvasModules.content);
       } else {
-        console.log('❌ No content found or array is empty');
+        logger.warn('No content found or array is empty');
       }
-      
-      // Extract real database IDs from canvas modules
-      console.log('🔧 DIRECT ID EXTRACTION:');
-      console.log('canvasData.canvasModules:', canvasData.canvasModules);
       
       // Direct extraction from canvasModules
       const personaIds: string[] = [];
       const productIds: string[] = [];
       const contentIds: string[] = [];
       
+      logger.debug('Direct ID extraction from canvasModules', canvasData.canvasModules);
+      
       // Extract user persona IDs
       if (canvasData.canvasModules?.userPersonas) {
         canvasData.canvasModules.userPersonas.forEach(persona => {
           if (persona.userPersonaId) {
             personaIds.push(persona.userPersonaId);
-            console.log('✅ Found userPersonaId:', persona.userPersonaId);
+            logger.debug('Found userPersonaId', persona.userPersonaId);
           }
         });
       }
@@ -213,7 +203,7 @@ export default function CampanaEnDesarrolloPage() {
         canvasData.canvasModules.products.forEach(product => {
           if (product.productId) {
             productIds.push(product.productId);
-            console.log('✅ Found productId:', product.productId);
+            logger.debug('Found productId', product.productId);
           }
         });
       }
@@ -223,15 +213,12 @@ export default function CampanaEnDesarrolloPage() {
         canvasData.canvasModules.content.forEach(content => {
           if (content.contentId) {
             contentIds.push(content.contentId);
-            console.log('✅ Found contentId:', content.contentId);
+            logger.debug('Found contentId', content.contentId);
           }
         });
       }
       
-      console.log('🎯 Extracted IDs for filtering:');
-      console.log('  - personaIds:', personaIds);
-      console.log('  - productIds:', productIds);
-      console.log('  - contentIds:', contentIds);
+      logger.debug('Extracted IDs for filtering', { personaIds, productIds, contentIds });
       
       // Fetch user personas (only selected ones)
       if (personaIds.length > 0) {
@@ -241,13 +228,13 @@ export default function CampanaEnDesarrolloPage() {
           .in('id', personaIds);
         
         if (personasError) {
-          console.error('Error fetching user personas:', personasError);
+          logger.error('Error fetching user personas', personasError);
         } else {
-          console.log('✅ Filtered user personas data:', personasData);
+          logger.debug('Filtered user personas loaded', { count: personasData?.length });
           setUserPersonas(personasData || []);
         }
       } else {
-        console.log('ℹ️ No user personas selected in canvas');
+        logger.info('No user personas selected in canvas');
         setUserPersonas([]);
       }
       
@@ -259,13 +246,13 @@ export default function CampanaEnDesarrolloPage() {
           .in('id', productIds);
         
         if (productsError) {
-          console.error('Error fetching products:', productsError);
+          logger.error('Error fetching products', productsError);
         } else {
-          console.log('✅ Filtered products data:', productsData);
+          logger.debug('Filtered products loaded', { count: productsData?.length });
           setProducts(productsData || []);
         }
       } else {
-        console.log('ℹ️ No products selected in canvas');
+        logger.info('No products selected in canvas');
         setProducts([]);
       }
       
@@ -277,18 +264,18 @@ export default function CampanaEnDesarrolloPage() {
           .in('id', contentIds);
         
         if (contentError) {
-          console.error('Error fetching content descriptions:', contentError);
+          logger.error('Error fetching content descriptions', contentError);
         } else {
-          console.log('✅ Filtered content descriptions data:', contentData);
+          logger.debug('Filtered content descriptions loaded', { count: contentData?.length });
           setContentDescriptions(contentData || []);
         }
       } else {
-        console.log('ℹ️ No content modules selected in canvas');
+        logger.info('No content modules selected in canvas');
         setContentDescriptions([]);
       }
       
     } catch (error) {
-      console.error('Error fetching organization data:', error);
+      logger.error('Error fetching organization data', error);
     } finally {
       setLoading(false);
     }
@@ -301,20 +288,14 @@ export default function CampanaEnDesarrolloPage() {
       try {
         const decodedParam = decodeURIComponent(dataParam);
         const decodedData = JSON.parse(decodedParam);
-        console.log('🎯 Campaign data received:', decodedData);
-        console.log('🔍 Canvas data structure:');
-        console.log('  - userPersonas:', decodedData.userPersonas);
-        console.log('  - products:', decodedData.products);
-        console.log('  - contentModules:', decodedData.contentModules);
-        console.log('  - canvasModules:', decodedData.canvasModules);
-        console.log('  - companyInfo:', decodedData.companyInfo);
+        logger.debug('Campaign data received', decodedData);
         setCampaignData(decodedData);
       } catch (error) {
-        console.error('Error parsing campaign data:', error);
+        logger.error('Error parsing campaign data', error);
         setCampaignData({});
       }
     } else {
-      console.log('⚠️ No campaign data found in URL parameters');
+      logger.warn('No campaign data found in URL parameters');
     }
   }, [searchParams]);
   
@@ -411,7 +392,7 @@ export default function CampanaEnDesarrolloPage() {
         action: 'generate-campaign'
       };
       
-      console.log('📤 Sending campaign summary to webhook:', campaignSummary);
+      logger.info('Sending campaign summary to webhook', campaignSummary);
       
       // Send to webhook using API route (to avoid CORS)
       const response = await fetch('/api/send-to-webhook', {
@@ -430,7 +411,7 @@ export default function CampanaEnDesarrolloPage() {
       }
       
       const result = await response.json();
-      console.log('✅ Webhook response:', result);
+      logger.info('Webhook response', result);
       
       // Check if webhook returned an image
       const webhookResponse = result.webhookResponse;
@@ -443,16 +424,16 @@ export default function CampanaEnDesarrolloPage() {
           const firstItem = webhookResponse[0];
           imageUrl = firstItem.url || firstItem.image || firstItem.imageUrl;
           revisedPrompt = firstItem.revised_prompt || firstItem.prompt;
-          console.log('🔍 Parsed from array response - Image URL:', imageUrl);
+          logger.debug('Parsed from array response - Image URL', { imageUrl });
         } else {
           // Handle direct object response format
           imageUrl = webhookResponse.image || webhookResponse.url || webhookResponse.imageUrl;
           revisedPrompt = webhookResponse.revised_prompt || webhookResponse.prompt;
-          console.log('🔍 Parsed from object response - Image URL:', imageUrl);
+          logger.debug('Parsed from object response - Image URL', { imageUrl });
         }
         
         if (imageUrl) {
-          console.log('🖼️ Image found in webhook response:', imageUrl);
+          logger.info('Image found in webhook response', { imageUrl });
           
           // Encode campaign data for the result page
           const resultData = {
@@ -470,8 +451,8 @@ export default function CampanaEnDesarrolloPage() {
           // Show success message
           alert('✅ Campaña generada exitosamente. Se abrió en una nueva pestaña.');
         } else {
-          console.log('ℹ️ No image found in webhook response');
-          console.log('📋 Webhook response structure:', JSON.stringify(webhookResponse, null, 2));
+          logger.info('No image found in webhook response');
+          logger.debug('Webhook response structure', webhookResponse);
           alert('✅ Resumen de campaña enviado exitosamente al webhook');
         }
       }
@@ -480,7 +461,7 @@ export default function CampanaEnDesarrolloPage() {
       setCampaignStatus(campaignStatus === 'developing' ? 'ready' : 'developing');
       
     } catch (error) {
-      console.error('❌ Error sending to webhook:', error);
+      logger.error('Error sending to webhook', error);
       alert(`❌ Error al enviar al webhook: ${error}`);
     } finally {
       setIsSendingToWebhook(false);
@@ -812,10 +793,10 @@ export default function CampanaEnDesarrolloPage() {
 
       {/* Action Buttons */}
       <div className="flex justify-center gap-4">
-        <Button variant="outline" onClick={() => router.push('/campaigns')}>
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver a Campañas
-        </Button>
+        <Button variant="outline" onClick={() => router.push('/dashboard')}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Volver al Dashboard
+          </Button>
         <Button 
           variant="secondary"
           onClick={handleGenerateCampaign}

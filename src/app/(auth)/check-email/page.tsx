@@ -7,12 +7,14 @@ import Image from 'next/image'
 import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
 import { MailCheck } from 'lucide-react'
+import { createLogger } from '@/lib/logger'
 
 function CheckEmailContent() {
   const searchParams = useSearchParams()
   const email = searchParams.get('email')
   const { resendConfirmationEmail } = useAuth()
   const [loading, setLoading] = useState(false)
+  const logger = createLogger('CheckEmail')
 
   const handleResend = async () => {
     if (!email) return
@@ -22,7 +24,7 @@ function CheckEmailContent() {
       // Success toast is handled in auth-context
     } catch (error) {
       // Error toast is handled in auth-context
-      console.error('Error resending confirmation email:', error)
+      logger.error('Error resending confirmation email', error)
     } finally {
       setLoading(false)
     }
@@ -43,7 +45,7 @@ function CheckEmailContent() {
                   className="h-8 w-8"
                 />
                 <span className="text-xl font-bold tracking-tight">
-                  Campaign<span className="neon-text-blue">Manager</span>
+                  POCKET
                 </span>
               </div>
             </Link>

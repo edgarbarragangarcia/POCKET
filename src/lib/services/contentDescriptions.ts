@@ -1,7 +1,21 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { ContentDescription } from '@/app/(dashboard)/campaigns/components/types';
+import { createLogger } from '@/lib/logger';
+
+interface ContentDescription {
+  id: string;
+  organization_id: string;
+  title: string;
+  description: string;
+  content_type: string;
+  tags: string[];
+  metadata: Record<string, any>;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
 
 const supabase = createClientComponentClient();
+const logger = createLogger('ContentDescriptionService');
 
 export class ContentDescriptionsService {
   /**
@@ -18,7 +32,7 @@ export class ContentDescriptionsService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Error fetching content descriptions:', error);
+      logger.error('Error fetching content descriptions', error);
       throw error;
     }
   }
@@ -55,7 +69,7 @@ export class ContentDescriptionsService {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Error creating content description:', error);
+      logger.error('Error creating content description', error);
       throw error;
     }
   }
@@ -81,7 +95,7 @@ export class ContentDescriptionsService {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error('Error updating content description:', error);
+      logger.error('Error updating content description', error);
       throw error;
     }
   }
@@ -98,7 +112,7 @@ export class ContentDescriptionsService {
 
       if (error) throw error;
     } catch (error) {
-      console.error('Error deleting content description:', error);
+      logger.error('Error deleting content description', error);
       throw error;
     }
   }
@@ -121,7 +135,7 @@ export class ContentDescriptionsService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Error searching content descriptions:', error);
+      logger.error('Error searching content descriptions', error);
       throw error;
     }
   }
@@ -144,7 +158,7 @@ export class ContentDescriptionsService {
       if (error) throw error;
       return data || [];
     } catch (error) {
-      console.error('Error fetching content descriptions by tags:', error);
+      logger.error('Error fetching content descriptions by tags', error);
       throw error;
     }
   }

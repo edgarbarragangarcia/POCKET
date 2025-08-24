@@ -10,7 +10,7 @@ import { CallToAction } from "@/components/marketing/call-to-action"
 import { ModeToggle } from "@/components/mode-toggle"
 
 export const metadata: Metadata = {
-  title: "Campaign Manager | Plataforma SaaS para gestión de campañas publicitarias",
+  title: "POCKET | Plataforma SaaS para gestión de campañas publicitarias",
   description:
     "Plataforma SaaS para creación, gestión y análisis de campañas publicitarias con herramientas avanzadas y asistencia de IA",
 }
@@ -29,7 +29,7 @@ export default function HomePage() {
               className="h-8 w-8"
             />
             <span className="text-xl font-bold tracking-tight">
-              Campaign<span className="neon-text-blue">Manager</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold">POCKET</span>
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-6 homepage-nav">
@@ -108,11 +108,11 @@ export default function HomePage() {
               className="h-8 w-8"
             />
             <span className="text-lg font-bold">
-              Campaign<span className="text-primary">Manager</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-500 font-bold">POCKET</span>
             </span>
           </div>
           <p className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Campaign Manager. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} POCKET. Todos los derechos reservados.
           </p>
           <div className="flex gap-4">
             <Link href="#" className="text-sm text-muted-foreground hover:text-foreground">

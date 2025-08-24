@@ -18,11 +18,13 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/components/ui/use-toast'
 import { useTenant } from '@/lib/tenant-context'
+import { createLogger } from '@/lib/logger'
 
 export default function NewOrganizationPage() {
   const { toast } = useToast()
   const router = useRouter()
   const { createTenant } = useTenant()
+  const logger = createLogger('NewOrganization')
 
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -99,7 +101,7 @@ export default function NewOrganizationPage() {
 
       router.push("/dashboard")
     } catch (error: any) {
-      console.error("Error creating tenant:", error)
+      logger.error('Error creating tenant', error)
       toast({
         title: "Error al crear organización",
         description: error.message || "No se pudo crear la organización. Inténtalo de nuevo.",

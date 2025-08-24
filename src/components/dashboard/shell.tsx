@@ -34,11 +34,6 @@ const navItems: NavItem[] = [
     icon: <LayoutDashboard className="h-5 w-5" />,
   },
   {
-    title: "Campañas",
-    href: "/dashboard/campaigns",
-    icon: <FileSpreadsheet className="h-5 w-5" />,
-  },
-  {
     title: "Creatividad",
     href: "/dashboard/creative",
     icon: <ImageIcon className="h-5 w-5" />,

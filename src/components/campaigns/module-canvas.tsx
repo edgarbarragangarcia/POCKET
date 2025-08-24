@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { createLogger } from '@/lib/logger';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Card, CardContent } from "@/components/ui/card";
 import { Building, Package, Plus, X, Settings, ArrowDownUp, ArrowRight } from 'lucide-react';
@@ -21,6 +22,7 @@ interface ModuleCanvasProps {
 }
 
 export default function ModuleCanvas({ selectedCompanyId }: ModuleCanvasProps) {
+  const logger = createLogger('ModuleCanvas');
   const supabase = createClientComponentClient();
   const [placedModules, setPlacedModules] = useState<PlacedModule[]>([]);
   const [activeModule, setActiveModule] = useState<string | null>(null);
@@ -50,7 +52,7 @@ export default function ModuleCanvas({ selectedCompanyId }: ModuleCanvasProps) {
       
       setPlacedModules(prev => [...prev, newModule]);
     } catch (error) {
-      console.error('Error al colocar el módulo:', error);
+      logger.error('Error al colocar el módulo', error);
     }
   };
   
@@ -97,7 +99,7 @@ export default function ModuleCanvas({ selectedCompanyId }: ModuleCanvasProps) {
       
       setActiveModule(null);
     } catch (error) {
-      console.error('Error al mover el módulo:', error);
+      logger.error('Error al mover el módulo', error);
     }
   };
   

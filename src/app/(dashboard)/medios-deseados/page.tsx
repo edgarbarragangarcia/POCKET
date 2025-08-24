@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { createLogger } from '@/lib/logger';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -173,29 +174,33 @@ export default function MediosDeseadosPage() {
   const [showSpecsModal, setShowSpecsModal] = useState(false);
   const [selectedSpecs, setSelectedSpecs] = useState<string[]>([]);
 
+  const logger = createLogger('MediosDeseados');
+
   useEffect(() => {
     // Get campaign data from URL parameters
     const dataParam = searchParams.get('data');
     if (dataParam) {
       try {
-        console.log('Raw data param:', dataParam);
+        logger.debug('Raw data param', dataParam);
         const decodedParam = decodeURIComponent(dataParam);
-        console.log('Decoded param:', decodedParam);
+        logger.debug('Decoded param', decodedParam);
         
         // Validate that the decoded string looks like valid JSON
         if (!decodedParam.trim().startsWith('{') || !decodedParam.trim().endsWith('}')) {
-          console.error('Invalid JSON format detected:', decodedParam);
+          logger.error('Invalid JSON format detected', { decodedParam });
           setCampaignData({});
           return;
         }
         
         const decodedData = JSON.parse(decodedParam);
-        console.log('Parsed campaign data:', decodedData);
+        logger.debug('Parsed campaign data', decodedData);
         setCampaignData(decodedData);
       } catch (error) {
-        console.error('Error parsing campaign data:', error);
-        console.error('Raw param that failed:', dataParam);
-        console.error('Decoded param that failed:', decodeURIComponent(dataParam));
+        logger.error('Error parsing campaign data', error);
+        logger.error('Failed param details', { 
+          rawParam: dataParam,
+          decodedParam: decodeURIComponent(dataParam)
+        });
         // Set empty campaign data to prevent crashes
         setCampaignData({});
       }
@@ -203,16 +208,17 @@ export default function MediosDeseadosPage() {
   }, [searchParams]);
 
   const handleMediaToggle = (mediaId: string) => {
-    console.log('=== MEDIA TOGGLE DEBUG ===');
-    console.log('Toggling media ID:', mediaId);
-    console.log('Current selectedMedia before toggle:', selectedMedia);
+    logger.debug('=== MEDIA TOGGLE DEBUG ===', {
+      mediaId,
+      currentSelectedMedia: selectedMedia
+    });
     
     setSelectedMedia(prev => {
       const newMedia = prev.includes(mediaId) 
         ? prev.filter(id => id !== mediaId)
         : [...prev, mediaId];
       
-      console.log('New selectedMedia after toggle:', newMedia);
+      logger.debug('Media toggle result', { newMedia });
       return newMedia;
     });
   };
@@ -228,23 +234,24 @@ export default function MediosDeseadosPage() {
   };
 
   const handleSpecToggle = (specId: string) => {
-    console.log('=== SPEC TOGGLE DEBUG ===');
-    console.log('Toggling spec ID:', specId);
-    console.log('Current selectedSpecs before toggle:', selectedSpecs);
+    logger.debug('=== SPEC TOGGLE DEBUG ===', {
+      specId,
+      currentSelectedSpecs: selectedSpecs
+    });
     
     setSelectedSpecs(prev => {
       const newSpecs = prev.includes(specId) 
         ? prev.filter(id => id !== specId)
         : [...prev, specId];
       
-      console.log('New selectedSpecs after toggle:', newSpecs);
+      logger.debug('Spec toggle result', { newSpecs });
       
       // Automáticamente agregar/quitar "digital" de selectedMedia basado en si hay specs seleccionadas
       if (newSpecs.length > 0 && !selectedMedia.includes('digital')) {
-        console.log('📱 Auto-adding "digital" to selectedMedia because specs are selected');
+        logger.debug('Auto-adding "digital" to selectedMedia because specs are selected');
         setSelectedMedia(prevMedia => [...prevMedia, 'digital']);
       } else if (newSpecs.length === 0 && selectedMedia.includes('digital')) {
-        console.log('📱 Auto-removing "digital" from selectedMedia because no specs are selected');
+        logger.debug('Auto-removing "digital" from selectedMedia because no specs are selected');
         setSelectedMedia(prevMedia => prevMedia.filter(id => id !== 'digital'));
       }
       
@@ -303,10 +310,11 @@ export default function MediosDeseadosPage() {
         submittedAt: new Date().toISOString()
       };
 
-      console.log('=== REDIRECTING TO CAMPAIGN DEVELOPMENT ===');
-      console.log('Submission data:', JSON.stringify(submissionData, null, 2));
-      console.log('Selected media:', selectedMedia);
-      console.log('Selected specs:', selectedSpecs);
+      logger.debug('=== REDIRECTING TO CAMPAIGN DEVELOPMENT ===', {
+        submissionData,
+        selectedMedia,
+        selectedSpecs
+      });
 
       // Encode the data to pass as URL parameter
       const encodedData = encodeURIComponent(JSON.stringify(submissionData));
@@ -315,8 +323,7 @@ export default function MediosDeseadosPage() {
       window.location.href = `/campana-en-desarrollo?data=${encodedData}`;
       
     } catch (error) {
-      console.error('=== REDIRECT ERROR ===');
-      console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
+      logger.error('=== REDIRECT ERROR ===', error);
       
       alert(`Error al procesar la campaña:\n\n${error instanceof Error ? error.message : 'Error desconocido'}`);
       setIsSubmitting(false);
@@ -334,7 +341,7 @@ export default function MediosDeseadosPage() {
           </p>
         </div>
         <div>
-          <Link href="/campaigns">
+          <Link href="/dashboard">
             <Button variant="outline">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver
@@ -557,9 +564,10 @@ export default function MediosDeseadosPage() {
           <div className="flex justify-end mt-6">
             <Button 
               onClick={() => {
-                console.log('=== MODAL CLOSED ===');
-                console.log('Final selectedSpecs:', selectedSpecs);
-                console.log('Final selectedMedia:', selectedMedia);
+                logger.debug('=== MODAL CLOSED ===', {
+                  finalSelectedSpecs: selectedSpecs,
+                  finalSelectedMedia: selectedMedia
+                });
                 setShowSpecsModal(false);
               }}
             >

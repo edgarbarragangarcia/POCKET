@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useAuth } from "@/lib/auth-context"
 import { Tenant, TenantMember } from "@/models/tenant"
 import { useToast } from "@/components/ui/use-toast"
+import { createLogger } from '@/lib/logger'
 
 type TenantContextType = {
   currentTenant: Tenant | null
@@ -28,22 +29,23 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAuth()
   const supabase = createClientComponentClient()
   const { toast } = useToast()
+  const logger = createLogger('TenantProvider')
 
   useEffect(() => {
-    console.log('[TenantProvider] useEffect triggered, user:', user);
+    logger.debug('[TenantProvider] useEffect triggered', { user });
     const loadTenants = async () => {
       if (!user) {
         setCurrentTenant(null)
         setTenants([])
         setUserRole(null)
         setIsLoading(false)
-        console.log('[TenantProvider] No user, cleared tenant state');
+        logger.debug('[TenantProvider] No user, cleared tenant state');
         return
       }
 
       try {
         setIsLoading(true)
-        console.log('[TenantProvider] Loading tenants for user:', user.id)
+        logger.debug('Loading tenants for user', { userId: user.id });
         
         // Verificar que la tabla existe
         try {
@@ -53,30 +55,30 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
             .limit(1)
             
           if (error) {
-            console.error("Error verificando la tabla tenant_members:", {
-              message: error.message,
-              details: error.details,
-              code: error.code,
-              hint: error.hint
-            })
+            logger.error("Error verificando la tabla tenant_members:", {
+            message: error.message,
+            details: error.details,
+            code: error.code,
+            hint: error.hint
+          })
             throw new Error(`Error al acceder a tabla: ${error.message}`)
           }
           
-          console.log("Tabla tenant_members verificada correctamente")
+          logger.debug("Tabla tenant_members verificada correctamente")
         } catch (tableError: any) {
-          console.error("Error al verificar la tabla:", tableError)
+          logger.error('Error al verificar la tabla', tableError);
           throw new Error(`Error verificando tabla: ${tableError?.message || 'Error desconocido'}`)
         }
         
         // Get all tenants that the user is a member of
-        console.log("Consultando tenant_members con user_id:", user.id)
+        logger.debug('Consultando tenant_members con user_id', { userId: user.id });
         const { data: memberData, error: memberError } = await supabase
           .from('tenant_members')
           .select('*, tenant:tenants(*)')
           .eq('user_id', user.id)
 
         if (memberError) {
-          console.error("Error obteniendo tenant_members:", {
+          logger.error("Error obteniendo tenant_members:", {
             message: memberError.message,
             details: memberError.details,
             code: memberError.code,
@@ -90,7 +92,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
           setTenants([])
           setUserRole(null)
           setIsLoading(false)
-          console.log('[TenantProvider] No tenants found for user');
+          logger.debug('No tenants found for user');
           return
         }
 
@@ -105,7 +107,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         })
         
         setTenants(userTenants)
-        console.log('[TenantProvider] Tenants loaded:', userTenants);
+        logger.debug('[TenantProvider] Tenants loaded', { tenants: userTenants });
 
         // Get current tenant from local storage or use the first one
         const savedTenantId = localStorage.getItem('currentTenantId')
@@ -114,7 +116,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
           : userTenants[0]
 
         setCurrentTenant(tenantToUse)
-        console.log('[TenantProvider] Current tenant set:', tenantToUse);
+        logger.debug('[TenantProvider] Current tenant set', { tenant: tenantToUse });
         
         if (tenantToUse) {
           localStorage.setItem('currentTenantId', tenantToUse.id)
@@ -125,7 +127,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
           )
           
           setUserRole(currentMember?.role || null)
-          console.log('[TenantProvider] User role set:', currentMember?.role || null);
+          logger.debug('[TenantProvider] User role set', { role: currentMember?.role || null });
         }
       } catch (error: any) {
         // Capturar y mostrar detalles completos del error
@@ -139,13 +141,11 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
           constructor: error?.constructor?.name,
         };
         
-        // Convertir a cadena para asegurar que se muestre completamente
-        console.error("Error loading tenants - Detalles completos:", JSON.stringify(errorDetails, null, 2));
-        console.error("Error stack trace:", error?.stack);
+        logger.error("Error loading tenants", { error: errorDetails, stack: error?.stack });
         
         // Si hay un error original, mostrarlo también
         if (error.originalError) {
-          console.error("Error original:", error.originalError);
+          logger.error('Error original', error.originalError);
         }
         
         // Si es un error de Supabase, podría tener más información
@@ -158,7 +158,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         })
       } finally {
         setIsLoading(false)
-        console.log('[TenantProvider] isLoading set to false')
+        logger.debug('[TenantProvider] isLoading set to false')
       }
     }
 
@@ -197,7 +197,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         description: `Has cambiado a ${tenant.name}.`,
       })
     } catch (error) {
-      console.error("Error switching tenant:", error)
+      logger.error('Error switching tenant', error);
       toast({
         title: "Error al cambiar organización",
         description: "No se pudo cambiar a la organización seleccionada.",
@@ -279,7 +279,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         description: `${formattedTenant.name} ha sido creada exitosamente.`,
       })
     } catch (error) {
-      console.error("Error creating tenant:", error)
+      logger.error('Error creating tenant', error);
       toast({
         title: "Error al crear organización",
         description: "No se pudo crear la organización. Inténtalo de nuevo.",
@@ -326,7 +326,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         description: "Los cambios han sido guardados exitosamente.",
       })
     } catch (error) {
-      console.error("Error updating tenant:", error)
+      logger.error('Error updating tenant', error);
       toast({
         title: "Error al actualizar organización",
         description: "No se pudieron guardar los cambios. Inténtalo de nuevo.",
@@ -383,7 +383,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         description: `Se ha enviado una invitación a ${email}.`,
       })
     } catch (error) {
-      console.error("Error inviting member:", error)
+      logger.error('Error inviting member', error);
       toast({
         title: "Error al invitar miembro",
         description: "No se pudo enviar la invitación. Inténtalo de nuevo.",
@@ -421,7 +421,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
         description: "El miembro ha sido eliminado de la organización.",
       })
     } catch (error) {
-      console.error("Error removing member:", error)
+      logger.error('Error removing member', error);
       toast({
         title: "Error al eliminar miembro",
         description: "No se pudo eliminar al miembro. Inténtalo de nuevo.",
@@ -432,7 +432,7 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    console.log('[TenantProvider] State changed:', { currentTenant, tenants, userRole, isLoading });
+    logger.debug('[TenantProvider] State changed', { currentTenant, tenants, userRole, isLoading });
   }, [currentTenant, tenants, userRole, isLoading]);
 
   const value = {

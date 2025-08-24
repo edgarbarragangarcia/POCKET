@@ -9,7 +9,8 @@ services:
       - key: NODE_VERSION
         value: 20
       - key: NEXT_PUBLIC_SUPABASE_URL
-        sync: false
+        value: https://kklnzclrsexprjwgbbsv.supabase.co
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
-        sync: false
-      # Agrega aquí cualquier otra variable de entorno que necesites
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtrbG56Y2xyc2V4cHJqd2diYnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NjgyNjYsImV4cCI6MjA3MTU0NDI2Nn0.30vZo6HG0xCzy8Bj1KoO64J8Ynak0CNjA1ZEmhHS6qE
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtrbG56Y2xyc2V4cHJqd2diYnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NjgyNjYsImV4cCI6MjA3MTU0NDI2Nn0.30vZo6HG0xCzy8Bj1KoO64J8Ynak0CNjA1ZEmhHS6qE

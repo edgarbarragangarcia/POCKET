@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createLogger } from '@/lib/logger';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -32,6 +33,7 @@ interface PersonaManagerProps {
 
 export function PersonaManager({ organizationId }: PersonaManagerProps) {
   const supabase = createClientComponentClient();
+  const logger = createLogger('PersonaManager');
   const [personas, setPersonas] = useState<UserPersona[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -49,7 +51,7 @@ export function PersonaManager({ organizationId }: PersonaManagerProps) {
         if (error) throw error;
         setPersonas(data || []);
       } catch (error) {
-        console.error('Error fetching user personas:', error);
+        logger.error('Error fetching user personas', error);
         toast.error('No se pudieron cargar los user personas.');
       } finally {
         setIsLoading(false);
@@ -74,7 +76,7 @@ export function PersonaManager({ organizationId }: PersonaManagerProps) {
       setPersonas((prev) => [data, ...prev]);
       toast.success('User Persona creado con éxito.');
     } catch (error) {
-      console.error('Error creating user persona:', error);
+      logger.error('Error creating user persona', error);
       toast.error('No se pudo crear el user persona.');
     }
   };
@@ -95,7 +97,7 @@ export function PersonaManager({ organizationId }: PersonaManagerProps) {
       );
       toast.success('User Persona actualizado con éxito.');
     } catch (error) {
-      console.error('Error updating user persona:', error);
+      logger.error('Error updating user persona', error);
       toast.error('No se pudo actualizar el user persona.');
     }
   };
@@ -116,7 +118,7 @@ export function PersonaManager({ organizationId }: PersonaManagerProps) {
       setPersonas((prev) => prev.filter((p) => p.id !== personaId));
       toast.success('User Persona eliminado con éxito.');
     } catch (error) {
-      console.error('Error deleting user persona:', error);
+      logger.error('Error deleting user persona', error);
       toast.error('No se pudo eliminar el user persona.');
     }
   };

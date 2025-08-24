@@ -12,6 +12,7 @@ import {
 } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { es } from "date-fns/locale"
+import { createLogger } from '@/lib/logger';
 
 import { useTenant } from "@/lib/tenant-context"
 import { Button } from "@/components/ui/button"
@@ -55,6 +56,7 @@ export function MembersTable({ members, invitations }: MembersTableProps) {
   const [showRemoveDialog, setShowRemoveDialog] = React.useState(false)
   const [memberToRemove, setMemberToRemove] = React.useState<TenantMember | null>(null)
   const { toast } = useToast()
+  const logger = createLogger('MembersTable');
 
   const canManageMembers = userRole === TenantRole.OWNER || userRole === TenantRole.ADMIN
   
@@ -66,7 +68,7 @@ export function MembersTable({ members, invitations }: MembersTableProps) {
       setShowRemoveDialog(false)
       setMemberToRemove(null)
     } catch (error) {
-      console.error("Error removing member:", error)
+      logger.error("Error removing member", error)
     }
   }
 
@@ -277,6 +279,7 @@ function InviteMemberDialog({ open, onClose }: InviteMemberDialogProps) {
   const [isLoading, setIsLoading] = React.useState(false)
   const { inviteMember } = useTenant()
   const { toast } = useToast()
+  const logger = createLogger('InviteMemberDialog');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -297,7 +300,7 @@ function InviteMemberDialog({ open, onClose }: InviteMemberDialogProps) {
       setRole(TenantRole.VIEWER)
       onClose()
     } catch (error) {
-      console.error("Error inviting member:", error)
+      logger.error("Error inviting member", error)
     } finally {
       setIsLoading(false)
     }

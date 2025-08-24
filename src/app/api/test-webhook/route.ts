@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createLogger } from '@/lib/logger';
 
 export async function GET() {
+  const logger = createLogger('TestWebhook');
   try {
-    console.log('=== WEBHOOK CONNECTIVITY TEST ===');
+    logger.info('=== WEBHOOK CONNECTIVITY TEST ===');
     
     const webhookUrl = 'https://n8nqa.ingenes.com:5689/webhook-test/creadorCampañas';
-    console.log('Testing webhook URL:', webhookUrl);
+    logger.info('Testing webhook URL', { webhookUrl });
     
     // Simple test payload
     const testData = {
@@ -15,7 +17,7 @@ export async function GET() {
       source: 'webhook-test-endpoint'
     };
     
-    console.log('Sending test data:', testData);
+    logger.info('Sending test data', { testData });
     
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -27,11 +29,13 @@ export async function GET() {
       signal: AbortSignal.timeout(10000) // 10 seconds timeout
     });
     
-    console.log('Test response status:', response.status);
-    console.log('Test response headers:', Object.fromEntries(response.headers.entries()));
+    logger.info('Test response', {
+      status: response.status,
+      headers: Object.fromEntries(response.headers.entries())
+    });
     
     const responseText = await response.text();
-    console.log('Test response body:', responseText);
+    logger.info('Test response body', { body: responseText });
     
     const result = {
       success: response.ok,
@@ -43,17 +47,19 @@ export async function GET() {
       timestamp: new Date().toISOString()
     };
     
-    console.log('=== TEST RESULT ===');
-    console.log(JSON.stringify(result, null, 2));
-    console.log('=== WEBHOOK CONNECTIVITY TEST END ===');
+    logger.info('=== TEST RESULT ===');
+    logger.info('Test result', result);
+    logger.info('=== WEBHOOK CONNECTIVITY TEST END ===');
     
     return NextResponse.json(result);
     
   } catch (error) {
-    console.error('=== WEBHOOK TEST ERROR ===');
-    console.error('Error type:', error?.constructor?.name);
-    console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    logger.error('=== WEBHOOK TEST ERROR ===');
+    logger.error('Webhook test error', {
+      errorType: error?.constructor?.name,
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : 'No stack trace'
+    });
     
     const result = {
       success: false,
@@ -62,7 +68,7 @@ export async function GET() {
       timestamp: new Date().toISOString()
     };
     
-    console.log('=== WEBHOOK TEST ERROR END ===');
+    logger.error('=== WEBHOOK TEST ERROR END ===');
     
     return NextResponse.json(result, { status: 500 });
   }

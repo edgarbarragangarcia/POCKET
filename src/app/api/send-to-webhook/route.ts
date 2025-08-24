@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createLogger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
+  const logger = createLogger('SendWebhook');
   let webhookData: any;
   
   try {
@@ -15,17 +17,17 @@ export async function POST(request: NextRequest) {
       requestId: `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
     };
 
-    console.log('=== WEBHOOK DEBUG START ===');
-    console.log('Request received at:', new Date().toISOString());
-    console.log('Webhook URL:', 'https://n8nqa.ingenes.com:5689/webhook-test/creadorCampañas');
-    console.log('Data to send:', JSON.stringify(webhookData, null, 2));
-    console.log('Data size:', JSON.stringify(webhookData).length, 'bytes');
+    logger.info('=== WEBHOOK DEBUG START ===');
+    logger.info('Request received at', new Date().toISOString());
+    logger.info('Webhook URL', 'https://n8nqa.ingenes.com:5689/webhook-test/creadorCampañas');
+    logger.info('Data to send', JSON.stringify(webhookData, null, 2));
+    logger.info('Data size', `${JSON.stringify(webhookData).length} bytes`);
 
     // Try multiple approaches to ensure delivery
     const webhookUrl = 'https://n8nqa.ingenes.com:5689/webhook-test/creadorCampañas';
     
     // First attempt with standard fetch
-    console.log('Attempting webhook delivery...');
+    logger.info('Attempting webhook delivery...');
     
     const fetchOptions = {
       method: 'POST',
@@ -40,28 +42,27 @@ export async function POST(request: NextRequest) {
       signal: AbortSignal.timeout(30000) // 30 seconds timeout
     };
 
-    console.log('Fetch options:', JSON.stringify(fetchOptions, null, 2));
+    logger.info('Fetch options:', JSON.stringify(fetchOptions, null, 2));
 
     const webhookResponse = await fetch(webhookUrl, fetchOptions);
 
-    console.log('Webhook response status:', webhookResponse.status);
-    console.log('Webhook response headers:', Object.fromEntries(webhookResponse.headers.entries()));
+    logger.info('Webhook response details', { status: webhookResponse.status, headers: Object.fromEntries(webhookResponse.headers.entries()) });
 
     // Read response regardless of status
     let responseData: string;
     try {
       responseData = await webhookResponse.text();
-      console.log('Webhook response body:', responseData);
+      logger.info('Webhook response body:', responseData);
     } catch (readError) {
-      console.error('Error reading webhook response:', readError);
+      logger.error('Error reading webhook response', readError);
       responseData = 'Could not read response body';
     }
 
     if (!webhookResponse.ok) {
-      console.error('Webhook returned non-OK status:', webhookResponse.status, webhookResponse.statusText);
+      logger.error('Webhook returned non-OK status', { status: webhookResponse.status, statusText: webhookResponse.statusText });
       
       // Try alternative approach - maybe the webhook expects different format
-      console.log('Trying alternative webhook format...');
+      logger.info('Trying alternative webhook format...');
       
       const alternativeData = {
         event: 'campaign_created',
@@ -81,12 +82,12 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify(alternativeData),
       });
       
-      console.log('Alternative attempt status:', alternativeResponse.status);
+      logger.info('Alternative attempt status', { status: alternativeResponse.status });
       const altResponseData = await alternativeResponse.text();
-      console.log('Alternative response:', altResponseData);
+      logger.info('Alternative response:', altResponseData);
       
       if (alternativeResponse.ok) {
-        console.log('Alternative format succeeded!');
+        logger.info('Alternative format succeeded!');
         return NextResponse.json({ 
           success: true, 
           message: 'Data sent successfully to webhook (alternative format)',
@@ -98,8 +99,8 @@ export async function POST(request: NextRequest) {
       throw new Error(`Webhook responded with status: ${webhookResponse.status} - ${responseData}`);
     }
 
-    console.log('Webhook delivery successful!');
-    console.log('=== WEBHOOK DEBUG END ===');
+    logger.info('Webhook delivery successful!');
+    logger.info('=== WEBHOOK DEBUG END ===');
 
     return NextResponse.json({ 
       success: true, 
@@ -110,17 +111,15 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('=== WEBHOOK ERROR ===');
-    console.error('Error type:', error?.constructor?.name);
-    console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+    logger.error('=== WEBHOOK ERROR ===');
+    logger.error('Webhook error details', { type: error?.constructor?.name, message: error instanceof Error ? error.message : 'Unknown error', stack: error instanceof Error ? error.stack : 'No stack trace' });
     
     if (error instanceof TypeError && error.message.includes('fetch')) {
-      console.error('This appears to be a network connectivity issue');
+      logger.error('This appears to be a network connectivity issue');
     }
     
-    console.error('Data that failed to send:', webhookData ? JSON.stringify(webhookData, null, 2) : 'No data available');
-    console.error('=== WEBHOOK ERROR END ===');
+    logger.error('Data that failed to send:', webhookData ? JSON.stringify(webhookData, null, 2) : 'No data available');
+    logger.error('=== WEBHOOK ERROR END ===');
     
     return NextResponse.json(
       { 

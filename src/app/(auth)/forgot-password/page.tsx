@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import { ArrowLeft } from "lucide-react"
+import { createLogger } from '@/lib/logger'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -16,6 +17,7 @@ export default function ForgotPasswordPage() {
   const [emailSent, setEmailSent] = useState(false)
   const { resetPassword } = useAuth()
   const { toast } = useToast()
+  const logger = createLogger('ForgotPassword')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,7 +37,7 @@ export default function ForgotPasswordPage() {
       setEmailSent(true)
     } catch (error) {
       // Error is handled in auth-context
-      console.error("Reset password error:", error)
+      logger.error('Reset password error', error)
     } finally {
       setLoading(false)
     }
@@ -57,7 +59,7 @@ export default function ForgotPasswordPage() {
                     className="h-8 w-8"
                   />
                   <span className="text-xl font-bold tracking-tight">
-                    Campaign<span className="neon-text-blue">Manager</span>
+                    POCKET
                   </span>
                 </div>
               </Link>

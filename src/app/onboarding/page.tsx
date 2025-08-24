@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
+import { createLogger } from "@/lib/logger"
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,6 +21,7 @@ export default function OnboardingPage() {
   const router = useRouter()
   const { toast } = useToast()
   const supabase = createClientComponentClient()
+  const logger = createLogger("Onboarding")
 
   // Verificar si el usuario ya tiene organizaciones
   React.useEffect(() => {
@@ -37,14 +39,14 @@ export default function OnboardingPage() {
           .eq('user_id', user.id)
 
         if (error) {
-          console.error("Error checking existing organizations:", error)
+          logger.error("Error checking existing organizations", error)
           // Continuar con el onboarding si hay error
           setIsCheckingExisting(false)
           return
         }
 
         if (existingMemberships && existingMemberships.length > 0) {
-          console.log("Usuario ya tiene organizaciones, redirigiendo al dashboard")
+          logger.info("Usuario ya tiene organizaciones, redirigiendo al dashboard")
           
           // Verificar si viene de una redirección automática del dashboard
           const urlParams = new URLSearchParams(window.location.search)
@@ -53,7 +55,7 @@ export default function OnboardingPage() {
           if (fromDashboard) {
             // Si viene del dashboard, hay un problema con el contexto de tenant
             // Redirigir silenciosamente de vuelta al dashboard
-            console.log("Redirección desde dashboard detectada, regresando silenciosamente")
+            logger.debug("Redirección desde dashboard detectada, regresando silenciosamente")
             router.replace("/dashboard")
             return
           } else {
@@ -71,7 +73,7 @@ export default function OnboardingPage() {
 
         setIsCheckingExisting(false)
       } catch (error) {
-        console.error("Error checking organizations:", error)
+        logger.error("Error checking organizations", error)
         setIsCheckingExisting(false)
       }
     }
@@ -123,7 +125,7 @@ export default function OnboardingPage() {
         .single()
 
       if (checkError && checkError.code !== 'PGRST116') { // PGRST116 = no rows returned
-        console.error("Error checking slug availability:", checkError)
+        logger.error("Error checking slug availability", checkError)
         throw new Error("Error verificando disponibilidad del nombre")
       }
 
@@ -150,7 +152,7 @@ export default function OnboardingPage() {
         .single()
 
       if (tenantError) {
-        console.error("Error creating tenant:", tenantError)
+        logger.error("Error creating tenant", tenantError)
         
         // Handle specific error cases
         if (tenantError.code === '23505') { // Unique constraint violation
@@ -175,7 +177,7 @@ export default function OnboardingPage() {
         })
 
       if (memberError) {
-        console.error("Error adding user as member:", memberError)
+        logger.error("Error adding user as member", memberError)
         throw new Error(memberError.message)
       }
 
@@ -186,14 +188,14 @@ export default function OnboardingPage() {
 
       // Esperar un momento para que el toast se muestre y luego redirigir
       setTimeout(() => {
-        console.log("Redirigiendo al dashboard...")
+        logger.info("Redirigiendo al dashboard")
         router.push("/dashboard")
         // Forzar recarga de la página para actualizar el contexto de tenant
         window.location.href = "/dashboard"
       }, 1500)
       
     } catch (error: any) {
-      console.error("Error creating organization:", error)
+      logger.error("Error creating organization", error)
       
       // Don't show generic error if we already handled specific cases
       if (!error.message.includes("Nombre no disponible")) {

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { createLogger } from '@/lib/logger';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Download, Copy, Share2, Eye } from 'lucide-react';
@@ -10,6 +11,7 @@ import Link from 'next/link';
 export default function CampaignResultPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const logger = createLogger('CampaignResult');
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [campaignData, setCampaignData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ export default function CampaignResultPage() {
         const decodedData = JSON.parse(decodeURIComponent(dataParam));
         setCampaignData(decodedData);
       } catch (error) {
-        console.error('Error parsing campaign data:', error);
+        logger.error('Error parsing campaign data', error);
       }
     }
     
@@ -51,7 +53,7 @@ export default function CampaignResultPage() {
       await navigator.clipboard.writeText(generatedImage);
       alert('✅ URL de imagen copiada al portapapeles');
     } catch (error) {
-      console.error('Error copying to clipboard:', error);
+      logger.error('Error copying to clipboard', error);
       alert('❌ Error al copiar URL');
     }
   };
@@ -67,7 +69,7 @@ export default function CampaignResultPage() {
           url: generatedImage
         });
       } catch (error) {
-        console.error('Error sharing:', error);
+        logger.error('Error sharing', error);
       }
     } else {
       // Fallback to copy URL
@@ -158,7 +160,7 @@ export default function CampaignResultPage() {
                           alt="Campaña generada" 
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            console.error('Error loading generated image:', e);
+                            logger.error('Error loading generated image', e);
                             e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjY0MCIgdmlld0JveD0iMCAwIDMyMCA2NDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iNjQwIiBmaWxsPSIjRjNGNEY2Ii8+Cjx0ZXh0IHg9IjE2MCIgeT0iMzIwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM2QjcyODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlbiBubyBkaXNwb25pYmxlPC90ZXh0Pgo8L3N2Zz4K';
                           }}
                         />

@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Session, User } from "@supabase/supabase-js"
 import { useToast } from "@/components/ui/use-toast"
+import { createLogger } from '@/lib/logger'
 
 type AuthContextType = {
   user: User | null
@@ -25,9 +26,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const supabase = createClientComponentClient()
   const { toast } = useToast()
+  const logger = createLogger('AuthProvider')
 
   useEffect(() => {
-    console.log('[AuthProvider] useEffect triggered');
+    logger.debug('AuthProvider useEffect triggered');
     const getSession = async () => {
       setIsLoading(true)
       try {
@@ -39,10 +41,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         setSession(activeSession)
         setUser(activeSession?.user || null)
-        console.log('[AuthProvider] Session loaded:', activeSession)
-        console.log('[AuthProvider] User loaded:', activeSession?.user)
+        logger.debug('Session loaded', activeSession)
+        logger.debug('User loaded', activeSession?.user)
       } catch (error) {
-        console.error("Error getting session:", error)
+        logger.error('Error getting session', error)
         toast({
           title: "Error de autenticación",
           description: "No se pudo recuperar la sesión. Inténtalo de nuevo.",
@@ -50,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         })
       } finally {
         setIsLoading(false)
-        console.log('[AuthProvider] isLoading set to false')
+        logger.debug('isLoading set to false')
       }
     }
 
@@ -61,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(session)
         setUser(session?.user || null)
         setIsLoading(false)
-        console.log('[AuthProvider] Auth state changed:', session)
+        logger.debug('Auth state changed', session)
       }
     )
 
@@ -87,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Por favor, verifica tu correo electrónico para confirmar tu cuenta.",
       })
     } catch (error: any) {
-      console.error("Error signing up:", error)
+      logger.error('Error signing up', error)
       toast({
         title: "Error en el registro",
         description: error?.message || "No se pudo completar el registro. Inténtalo de nuevo.",
@@ -122,7 +124,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Bienvenido de nuevo.",
       })
     } catch (error: any) {
-      console.error("Error signing in:", error)
+      logger.error('Error signing in', error)
       // Don't display toast if it's our custom error since we already displayed one
       if (error.message !== "EMAIL_NOT_CONFIRMED") {
         toast({
@@ -153,7 +155,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         localStorage.removeItem('currentTenantId')
       } catch (e) {
-        console.warn('No se pudo limpiar localStorage:', e)
+        logger.warn('Could not clean localStorage', e)
       }
 
       toast({
@@ -165,7 +167,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       window.location.href = '/login'
       
     } catch (error: any) {
-      console.error("Error signing out:", error)
+      logger.error('Error signing out', error)
       
       // Aún así, limpiar el estado local
       setSession(null)
@@ -199,7 +201,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Revisa tu correo para continuar con el proceso.",
       })
     } catch (error: any) {
-      console.error("Error resetting password:", error)
+      logger.error('Error resetting password', error)
       toast({
         title: "Error al restablecer contraseña",
         description: error?.message || "No se pudo enviar el correo. Inténtalo de nuevo.",
@@ -224,7 +226,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Tu contraseña ha sido actualizada exitosamente.",
       })
     } catch (error: any) {
-      console.error("Error updating password:", error)
+      logger.error('Error updating password', error)
       toast({
         title: "Error al actualizar contraseña",
         description: error?.message || "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
@@ -253,7 +255,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         description: "Por favor, revisa tu bandeja de entrada para confirmar tu cuenta.",
       })
     } catch (error: any) {
-      console.error("Error resending confirmation email:", error)
+      logger.error('Error resending confirmation email', error)
       toast({
         title: "Error al enviar correo",
         description: error?.message || "No se pudo enviar el correo de verificación. Inténtalo de nuevo más tarde.",
@@ -264,7 +266,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    console.log('[AuthProvider] State changed:', { user, session, isLoading });
+    logger.debug('State changed', { user, session, isLoading });
   }, [user, session, isLoading]);
 
   const value = {
