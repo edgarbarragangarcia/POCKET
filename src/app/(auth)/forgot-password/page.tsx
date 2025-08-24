@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
                     className="h-8 w-8"
                   />
                   <span className="text-xl font-bold tracking-tight">
-                    POCKET
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 font-extrabold">POCKET</span>
                   </span>
                 </div>
               </Link>
