@@ -46,6 +46,18 @@ const products = [
   },
 ];
 
+interface BuyerPersonaState {
+  name: string;
+  occupation: string;
+  goals: string;
+  frustrations: string;
+  motivations: string;
+  channels: string;
+  personalGoals: string;
+  buyingMotivations: string;
+  painPoints: string;
+}
+
 const CompanyPage = () => {
   const [companyData, setCompanyData] = useState({
     name: "",
@@ -60,7 +72,7 @@ const CompanyPage = () => {
     ]
   });
 
-  const [buyerPersona, setBuyerPersona] = useState({
+  const [buyerPersona, setBuyerPersona] = useState<BuyerPersonaState>({
     name: "",
     occupation: "",
     goals: "",
@@ -69,11 +81,7 @@ const CompanyPage = () => {
     channels: "",
     personalGoals: "",
     buyingMotivations: "",
-    painPoints: "",
-    needs: "",
-    digitalHabits: "",
-    buyingBarriers: "",
-    referenceBrands: ""
+    painPoints: ""
   });
 
   const [products, setProducts] = useState([
@@ -94,7 +102,10 @@ const CompanyPage = () => {
     if (section === 'company') {
       setCompanyData(prev => ({ ...prev, [field]: value }));
     } else if (section === 'buyerPersona') {
-      setBuyerPersona(prev => ({ ...prev, [field]: value }));
+      setBuyerPersona(prev => ({
+        ...prev,
+        [field]: value
+      }));
     }
   };
 
@@ -147,14 +158,14 @@ const CompanyPage = () => {
       <PageHeader title="Compañía" parentTitle="Mis Compañías" parentHref="/companies" />
       
       <Tabs defaultValue="company-info" className="w-full">
-        <TabsList className="flex w-full bg-gradient-to-r from-slate-50/80 to-white/90 dark:from-slate-800/90 dark:to-slate-900/90 backdrop-blur-xl rounded-2xl p-1.5 shadow-lg border border-slate-200/50 dark:border-slate-700/50">
-          <TabsTrigger value="company-info" className="flex-1 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 dark:data-[state=active]:shadow-indigo-500/10 rounded-xl transition-all duration-300 ease-in-out py-3 px-4 font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-center">
+        <TabsList className="flex w-full gap-2">
+          <TabsTrigger value="company-info" className="flex-1">
             Información
           </TabsTrigger>
-          <TabsTrigger value="buyer-persona" className="flex-1 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 dark:data-[state=active]:shadow-indigo-500/10 rounded-xl transition-all duration-300 ease-in-out py-3 px-4 font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-center">
+          <TabsTrigger value="buyer-persona" className="flex-1">
             Buyer Persona
           </TabsTrigger>
-          <TabsTrigger value="products" className="flex-1 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:shadow-indigo-500/25 dark:data-[state=active]:shadow-indigo-500/10 rounded-xl transition-all duration-300 ease-in-out py-3 px-4 font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-center">
+          <TabsTrigger value="products" className="flex-1">
             Productos
           </TabsTrigger>
         </TabsList>
@@ -188,70 +199,13 @@ const CompanyPage = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div className="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-200/50 dark:border-blue-700/50">
-                  <Label htmlFor="mission" className="font-bold text-base mb-2 text-blue-700 dark:text-blue-300 flex items-center">
-                    <span className="mr-2">🎯</span>
-                    Misión
-                  </Label>
-                  <Textarea 
-                    id="mission"
-                    value={companyData.mission}
-                    onChange={(e) => handleInputChange('company', 'mission', e.target.value)}
-                    className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-white/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600"
-                    rows={3}
-                    placeholder="¿Cuál es el propósito fundamental de tu empresa? ¿Por qué existe?"
-                  />
-                </div>
-                <div className="bg-gradient-to-br from-purple-50/80 to-pink-50/80 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-200/50 dark:border-purple-700/50">
-                  <Label htmlFor="vision" className="font-bold text-base mb-2 text-purple-700 dark:text-purple-300 flex items-center">
-                    <span className="mr-2">👁️</span>
-                    Visión
-                  </Label>
-                  <Textarea 
-                    id="vision"
-                    value={companyData.vision}
-                    onChange={(e) => handleInputChange('company', 'vision', e.target.value)}
-                    className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-white/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600"
-                    rows={3}
-                    placeholder="¿A dónde quieres llegar? Describe el futuro deseado de tu empresa..."
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <Label className="font-bold text-base mb-2 text-slate-800 dark:text-slate-200 flex items-center">
-                  <span className="mr-2">🚀</span>
-                  Objetivos Estratégicos
-                </Label>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {companyData.strategicObjectives.map((objective, index) => (
-                    <div key={index} className="bg-gradient-to-r from-slate-50/80 to-slate-100/80 dark:from-slate-700/50 dark:to-slate-800/50 p-4 rounded-xl border border-slate-200/50 dark:border-slate-600/50 flex items-start">
-                      <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold mr-3 flex-shrink-0 mt-0.5">
-                        {index + 1}
-                      </div>
-                      <Textarea 
-                        value={objective}
-                        onChange={(e) => {
-                          const newObjectives = [...companyData.strategicObjectives];
-                          newObjectives[index] = e.target.value;
-                          setCompanyData(prev => ({ ...prev, strategicObjectives: newObjectives }));
-                        }}
-                        className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-white/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600"
-                        rows={2}
-                        placeholder={`Ej: ${index === 0 ? 'Aumentar la participación de mercado en 25% en 2 años' : index === 1 ? 'Desarrollar 3 nuevas líneas de productos' : index === 2 ? 'Expandirse a nuevos mercados internacionales' : 'Mejorar la satisfacción del cliente a 95%'}`}
-                      />
-                    </div>
-                  ))}
-                <div className="flex justify-center mt-8">
+              <div className="flex justify-center mt-8">
                   <Button 
                     onClick={addProduct}
                     className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700"
                   >
                     + Agregar Nuevo Producto
                   </Button>
-                </div>
-              </div>
               </div>
             </div>
           </TabsContent>
@@ -384,62 +338,8 @@ const CompanyPage = () => {
                   placeholder="¿Qué problemas específicos intenta resolver?"
                 />
               </div>
-              <div>
-                <Label htmlFor="persona-needs" className="font-bold text-base mb-2 text-slate-800 dark:text-slate-200 flex items-center">
-                  <span className="mr-2">🎯</span>
-                  Necesidades
-                </Label>
-                <Textarea 
-                  id="persona-needs"
-                  value={buyerPersona.needs}
-                  onChange={(e) => handleInputChange('buyerPersona', 'needs', e.target.value)}
-                  className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-white/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600"
-                  rows={3}
-                  placeholder="¿Qué necesidades tiene que tu producto/servicio puede satisfacer?"
-                />
-              </div>
-              <div>
-                <Label htmlFor="persona-digitalHabits" className="font-bold text-base mb-2 text-slate-800 dark:text-slate-200 flex items-center">
-                  <span className="mr-2">📱</span>
-                  Hábitos digitales
-                </Label>
-                <Textarea 
-                  id="persona-digitalHabits"
-                  value={buyerPersona.digitalHabits}
-                  onChange={(e) => handleInputChange('buyerPersona', 'digitalHabits', e.target.value)}
-                  className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-white/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600"
-                  rows={3}
-                  placeholder="¿Cómo consume contenido digital? ¿Qué plataformas usa?"
-                />
-              </div>
-              <div>
-                <Label htmlFor="persona-buyingBarriers" className="font-bold text-base mb-2 text-slate-800 dark:text-slate-200 flex items-center">
-                  <span className="mr-2">🚫</span>
-                  Barreras de compra
-                </Label>
-                <Textarea 
-                  id="persona-buyingBarriers"
-                  value={buyerPersona.buyingBarriers}
-                  onChange={(e) => handleInputChange('buyerPersona', 'buyingBarriers', e.target.value)}
-                  className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-white/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600"
-                  rows={3}
-                  placeholder="¿Qué le impide comprar? ¿Presupuesto, tiempo, complejidad?"
-                />
-              </div>
-              <div>
-                <Label htmlFor="persona-referenceBrands" className="font-bold text-base mb-2 text-slate-800 dark:text-slate-200 flex items-center">
-                  <span className="mr-2">🏷️</span>
-                  Marcas de referencia
-                </Label>
-                <Textarea 
-                  id="persona-referenceBrands"
-                  value={buyerPersona.referenceBrands}
-                  onChange={(e) => handleInputChange('buyerPersona', 'referenceBrands', e.target.value)}
-                  className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed bg-white/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-600"
-                  rows={2}
-                  placeholder="Ej: Slack, Asana, Notion - marcas que le inspiran confianza"
-                />
-              </div>
+
+
             </div>
           </div>
         </TabsContent>

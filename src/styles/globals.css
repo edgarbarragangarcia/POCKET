@@ -1,4 +1,4 @@
- /* Tailwind CSS v3 directives */
+/* Tailwind CSS v3 directives */
 /* eslint-disable */
 /* stylelint-disable */
 
@@ -198,7 +198,7 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
     background-color: black;
-    color: hsl(var(--neon-blue));
+    color: white;
     border: 1px solid hsl(var(--neon-blue));
     box-shadow: 0 0 10px rgba(var(--neon-blue-rgb),0.7);
   }

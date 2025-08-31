@@ -7,6 +7,7 @@ import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useState, useEffect, useRef } from 'react'
+import { ModeToggle } from '@/components/mode-toggle';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -69,6 +70,9 @@ export function Sidebar() {
         </nav>
       </div>
       <div className="mt-auto p-4 border-t border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
+        <div className={`flex items-center justify-center mb-4 transition-all duration-300 ${isExpanded ? 'opacity-100' : 'opacity-0 w-0 h-0 overflow-hidden'}`}>
+          <ModeToggle />
+        </div>
           <div className="flex items-center gap-3 overflow-hidden">
             <Avatar className="h-12 w-12 flex-shrink-0 border-2 border-slate-200 dark:border-slate-600 shadow-lg">
               <AvatarImage src={user?.user_metadata?.avatar_url} alt="Avatar" />

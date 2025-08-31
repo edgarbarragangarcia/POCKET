@@ -21,15 +21,15 @@ const buttonVariants = (options: {
   const baseStyles = "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
   
   const variantStyles = {
-    default: "bg-primary text-primary-foreground hover:bg-primary/90",
+    default: "bg-primary text-primary-foreground dark:text-white hover:bg-primary/90",
     destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-    outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+    outline: "border border-input bg-background text-foreground dark:text-white hover:bg-accent hover:text-accent-foreground",
     secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-    ghost: "hover:bg-accent hover:text-accent-foreground",
+    ghost: "text-foreground dark:text-white hover:bg-accent hover:text-accent-foreground",
     link: "text-primary underline-offset-4 hover:underline",
-    neumorphic: "neumorphic-light dark:neumorphic-dark text-foreground",
-    glassmorphic: "glassmorphic text-foreground",
-    brutalist: "brutalist text-foreground",
+    neumorphic: "neumorphic-light dark:neumorphic-dark text-foreground dark:text-white",
+    glassmorphic: "glassmorphic text-foreground dark:text-white",
+    brutalist: "brutalist text-foreground dark:text-white",
     gradient: "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white animate-gradient-flow bg-size-200"
   }[variant];
   
