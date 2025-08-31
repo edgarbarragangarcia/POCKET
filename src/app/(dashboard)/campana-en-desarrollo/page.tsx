@@ -469,18 +469,18 @@ export default function CampanaEnDesarrolloPage() {
   };
 
   return (
-    <div className="h-full flex flex-col p-6 bg-gray-50">
+    <div className="h-full flex flex-col p-4 sm:p-6 bg-gray-50">
       {/* Header with back button */}
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start mb-4 sm:mb-6 gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Campaña en Desarrollo</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Campaña en Desarrollo</h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
             Tu campaña está siendo procesada y configurada para su lanzamiento
           </p>
         </div>
-        <div>
+        <div className="w-full sm:w-auto">
           <Link href="/medios-deseados">
-            <Button variant="outline">
+            <Button variant="outline" className="w-full sm:w-auto">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver
             </Button>
@@ -493,7 +493,7 @@ export default function CampanaEnDesarrolloPage() {
 
       {/* Company Information from Supabase */}
       {organization && (
-        <Card className="mb-6">
+        <Card className="mb-4 sm:mb-6">
           <CardHeader>
             <CardTitle>Información de la Compañía</CardTitle>
           </CardHeader>
@@ -504,15 +504,15 @@ export default function CampanaEnDesarrolloPage() {
                 <span className="ml-2 text-gray-600">Cargando información...</span>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <div>
-                  <p className="font-semibold text-lg text-primary">{organization.name}</p>
+                  <p className="font-semibold text-base sm:text-lg text-primary">{organization.name}</p>
                 </div>
                 
                 {organization.mission && (
                   <div>
-                    <p className="font-medium text-gray-700 mb-1">Misión:</p>
-                    <p className="text-gray-600 bg-blue-50 p-3 rounded-lg">{organization.mission}</p>
+                    <p className="font-medium text-gray-700 mb-1 text-sm sm:text-base">Misión:</p>
+                    <p className="text-gray-600 bg-blue-50 p-2 sm:p-3 rounded-lg text-sm sm:text-base">{organization.mission}</p>
                   </div>
                 )}
                 
@@ -544,7 +544,7 @@ export default function CampanaEnDesarrolloPage() {
               
       {/* User Personas from Supabase */}
       {userPersonas.length > 0 && (
-        <Card className="mb-6">
+        <Card className="mb-4 sm:mb-6">
           <CardHeader>
             <CardTitle>User Personas Seleccionadas</CardTitle>
           </CardHeader>
@@ -555,15 +555,15 @@ export default function CampanaEnDesarrolloPage() {
                 <span className="ml-2 text-gray-600">Cargando personas...</span>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {userPersonas.map((persona, index) => (
-                  <div key={index} className="p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50">
-                    <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
+                  <div key={index} className="p-3 sm:p-4 border rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <div className="flex items-start gap-2 sm:gap-3">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold text-sm sm:text-base">
                         {persona.name ? persona.name.charAt(0).toUpperCase() : 'P'}
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-gray-800">{persona.name}</h4>
+                        <h4 className="font-semibold text-gray-800 text-sm sm:text-base">{persona.name}</h4>
                         {persona.bio && (
                           <p className="text-sm text-gray-600 mt-1">{persona.bio}</p>
                         )}
@@ -599,7 +599,7 @@ export default function CampanaEnDesarrolloPage() {
 
       {/* Products from Supabase */}
       {products.length > 0 && (
-        <Card className="mb-6">
+        <Card className="mb-4 sm:mb-6">
           <CardHeader>
             <CardTitle>Productos Seleccionados</CardTitle>
           </CardHeader>
@@ -610,15 +610,15 @@ export default function CampanaEnDesarrolloPage() {
                 <span className="ml-2 text-gray-600">Cargando productos...</span>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {products.map((product, index) => (
-                <div key={index} className="p-4 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-green-500 flex items-center justify-center text-white">
-                      <Smartphone className="w-5 h-5" />
+                <div key={index} className="p-3 sm:p-4 border rounded-lg bg-gradient-to-r from-green-50 to-emerald-50">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-green-500 flex items-center justify-center text-white">
+                      <Smartphone className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-800">{product.name}</h4>
+                      <h4 className="font-semibold text-gray-800 text-sm sm:text-base">{product.name}</h4>
                       {product.description && (
                         <p className="text-sm text-gray-600 mt-1">{product.description}</p>
                       )}
@@ -640,7 +640,7 @@ export default function CampanaEnDesarrolloPage() {
 
       {/* Content Descriptions from Supabase */}
       {contentDescriptions.length > 0 && (
-        <Card className="mb-6">
+        <Card className="mb-4 sm:mb-6">
           <CardHeader>
             <CardTitle>Módulos de Contenido</CardTitle>
           </CardHeader>
@@ -651,15 +651,15 @@ export default function CampanaEnDesarrolloPage() {
                 <span className="ml-2 text-gray-600">Cargando contenido...</span>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {contentDescriptions.map((content, index) => (
-                <div key={index} className="p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-pink-50">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-purple-500 flex items-center justify-center text-white">
-                      <Newspaper className="w-5 h-5" />
+                <div key={index} className="p-3 sm:p-4 border rounded-lg bg-gradient-to-r from-purple-50 to-pink-50">
+                  <div className="flex items-start gap-2 sm:gap-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-purple-500 flex items-center justify-center text-white">
+                      <Newspaper className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-gray-800">{content.title}</h4>
+                      <h4 className="font-semibold text-gray-800 text-sm sm:text-base">{content.title}</h4>
                       {content.description && (
                         <p className="text-sm text-gray-600 mt-2">{content.description}</p>
                       )}
@@ -682,7 +682,7 @@ export default function CampanaEnDesarrolloPage() {
 
       {/* Selected Media Details */}
       {campaignData.selectedMedia && campaignData.selectedMedia.length > 0 && (
-        <Card className="mb-6">
+        <Card className="mb-4 sm:mb-6">
           <CardHeader>
             <CardTitle>Medios Seleccionados</CardTitle>
           </CardHeader>
@@ -699,14 +699,14 @@ export default function CampanaEnDesarrolloPage() {
                 const medio = mediaNames[mediaId] || mediaId;
                 
                 return (
-                  <div key={index} className="p-4 border rounded-lg bg-gradient-to-r from-orange-50 to-red-50">
-                    <div className="flex items-start gap-3">
+                  <div key={index} className="p-3 sm:p-4 border rounded-lg bg-gradient-to-r from-orange-50 to-red-50">
+                    <div className="flex items-start gap-2 sm:gap-3">
                       <div className="p-2 rounded-lg bg-primary text-white">
                         {getMediaIcon(medio)}
                       </div>
                       <div className="flex-1">
-                        <p className="font-semibold text-gray-800">{medio}</p>
-                        <p className="text-sm text-gray-600 mt-1">Configurándose...</p>
+                        <p className="font-semibold text-gray-800 text-sm sm:text-base">{medio}</p>
+                        <p className="text-xs sm:text-sm text-gray-600 mt-1">Configurándose...</p>
                         
                         {/* Show Digital/Social Media specs if available */}
                         {medio === 'Digital/Social Media' && campaignData.selectedSpecs && campaignData.selectedSpecs.length > 0 && (
@@ -753,16 +753,16 @@ export default function CampanaEnDesarrolloPage() {
         </Card>
       )}
 
-      <Card className="mb-6">
+      <Card className="mb-4 sm:mb-6">
         <CardHeader>
           <CardTitle>Progreso de Desarrollo</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-2 h-2 rounded-full bg-green-500"></div>
               <div className="flex-1">
-                <p className="font-medium text-sm">Campaña recibida</p>
+                <p className="font-medium text-xs sm:text-sm">Campaña recibida</p>
                 <p className="text-xs text-gray-600">{campaignData.submittedAt ? new Date(campaignData.submittedAt).toLocaleString() : 'Hace unos momentos'}</p>
               </div>
             </div>
@@ -792,8 +792,8 @@ export default function CampanaEnDesarrolloPage() {
       </Card>
 
       {/* Action Buttons */}
-      <div className="flex justify-center gap-4">
-        <Button variant="outline" onClick={() => router.push('/dashboard')}>
+      <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+        <Button variant="outline" onClick={() => router.push('/dashboard')} className="w-full sm:w-auto">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver al Dashboard
           </Button>
@@ -801,6 +801,7 @@ export default function CampanaEnDesarrolloPage() {
           variant="secondary"
           onClick={handleGenerateCampaign}
           disabled={isSendingToWebhook}
+          className="w-full sm:w-auto"
         >
           {isSendingToWebhook ? (
             <>
