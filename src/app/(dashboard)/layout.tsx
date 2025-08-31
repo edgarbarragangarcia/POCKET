@@ -9,6 +9,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { user, isLoading } = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!user && !isLoading && window.location.pathname !== "/login") {
+      router.push("/login");
+    }
+  }, [user, router, isLoading]);
+
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -16,12 +22,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </div>
     );
   }
-
-  useEffect(() => {
-    if (!user && window.location.pathname !== "/login") {
-      router.push("/login");
-    }
-  }, [user, router, isLoading]);
 
   return (
     <div className="flex h-screen bg-background">
