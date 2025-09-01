@@ -85,17 +85,9 @@ class Logger {
     }
   }
 
-  // Utility methods for common patterns
+  // Utility method for component-specific logging
   debug(component: string, message: string, data?: any): void {
     this.info(`[${component}] ${message}`, data);
-  }
-
-  apiError(endpoint: string, error: any): void {
-    this.error(`API Error in ${endpoint}`, error);
-  }
-
-  apiSuccess(endpoint: string, data?: any): void {
-    this.info(`API Success in ${endpoint}`, data);
   }
 
   // Set new configuration
@@ -104,15 +96,18 @@ class Logger {
   }
 }
 
-// Create singleton instance
+// Export singleton instance
 export const logger = new Logger();
 
-// Create component-specific loggers
+// Factory function to create component-specific loggers
 export const createLogger = (component: string) => ({
   error: (message: string, error?: any) => logger.error(`[${component}] ${message}`, error),
   warn: (message: string, data?: any) => logger.warn(`[${component}] ${message}`, data),
   info: (message: string, data?: any) => logger.info(`[${component}] ${message}`, data),
-  debug: (message: string, data?: any) => logger.debug(component, message, data)
+  debug: (message: string, data?: any) => logger.debug(component, message, data),
+  // Convenience methods for API logging
+  apiError: (endpoint: string, error: any) => logger.error(`[${component}] API Error in ${endpoint}`, error),
+  apiSuccess: (endpoint: string, data?: any) => logger.info(`[${component}] API Success in ${endpoint}`, data)
 });
 
 // Export for testing

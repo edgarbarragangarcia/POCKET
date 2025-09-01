@@ -21,7 +21,7 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname();
   const { user, signOut } = useAuth();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false); // Inicia colapsado, se expande con hover
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -76,14 +76,14 @@ export function Sidebar() {
         ref={sidebarRef}
         className={`
           flex h-full max-h-screen flex-col gap-2 border-r bg-gradient-to-b from-slate-50/80 to-white/90 dark:from-slate-900/90 dark:to-slate-800/90 backdrop-blur-xl transition-all duration-300 ease-in-out shadow-2xl border-slate-200/50 dark:border-slate-700/50
-          md:relative md:translate-x-0
-          ${isMobileOpen ? 'fixed inset-y-0 left-0 z-50 w-72 translate-x-0' : 'fixed inset-y-0 left-0 z-50 w-72 -translate-x-full'}
-          md:${isExpanded ? 'w-72' : 'w-24'}
+          md:fixed md:inset-y-0 md:left-0 md:z-40 md:translate-x-0
+          ${isMobileOpen ? 'fixed inset-y-0 left-0 z-50 w-72 translate-x-0' : 'fixed inset-y-0 left-0 z-50 w-72 -translate-x-full md:translate-x-0'}
+          md:${isExpanded ? 'w-72' : 'w-16'}
         `}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-      <div className="flex h-20 items-center border-b border-slate-200/50 dark:border-slate-700/50 px-6 backdrop-blur-sm">
+      <div className={`flex h-20 items-center border-b border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm transition-all duration-300 ${isExpanded ? 'px-6' : 'px-3 justify-center'}`}>
         <Link href="/" className="flex items-center gap-3 font-bold whitespace-nowrap group">
           <div className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-2.5 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110">
             <Target className="h-6 w-6 text-white flex-shrink-0" />
@@ -91,7 +91,7 @@ export function Sidebar() {
           <span className={`font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent transition-all duration-300 ${(isExpanded || isMobileOpen) ? 'opacity-100 ml-2 text-xl' : 'opacity-0 w-0'}`}>CampaignBuilder</span>
         </Link>
       </div>
-      <div className="flex-1 px-4 py-6">
+      <div className={`flex-1 py-6 transition-all duration-300 ${isExpanded ? 'px-4' : 'px-2'}`}>
         <nav className="grid items-start gap-1">
           {navItems.map((item) => {
             const isActive = pathname.startsWith(item.href);
@@ -99,11 +99,11 @@ export function Sidebar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center rounded-xl px-4 py-3.5 transition-all duration-300 ease-in-out group relative overflow-hidden ${ 
+                className={`flex items-center rounded-xl py-3.5 transition-all duration-300 ease-in-out group relative overflow-hidden ${ 
                   isActive
                     ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/25 dark:shadow-indigo-500/10' // Modern active state
                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100/80 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-white' // Modern hover state
-                } ${!isExpanded ? 'justify-center' : ''}`}>
+                } ${isExpanded ? 'px-4' : 'px-3 justify-center'}`}>
                 <div className={`absolute inset-0 bg-gradient-to-r from-indigo-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-indigo-500/10 group-hover:via-purple-500/10 group-hover:to-pink-500/10 transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
                 <item.icon className={`h-5 w-5 flex-shrink-0 z-10 transition-transform duration-300 ${isActive ? 'text-white' : ''} group-hover:scale-110`} />
                 <span className={`font-medium transition-all duration-300 ${(isExpanded || isMobileOpen) ? 'opacity-100 ml-4' : 'opacity-0 w-0'}`}>
@@ -117,12 +117,12 @@ export function Sidebar() {
           })}
         </nav>
       </div>
-      <div className="mt-auto p-4 border-t border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
+      <div className={`mt-auto border-t border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm transition-all duration-300 ${isExpanded ? 'p-4' : 'p-2'}`}>
         <div className={`flex items-center justify-center mb-4 transition-all duration-300 ${(isExpanded || isMobileOpen) ? 'opacity-100' : 'opacity-0 w-0 h-0 overflow-hidden'}`}>
           <ModeToggle />
         </div>
-          <div className="flex items-center gap-3 overflow-hidden">
-            <Avatar className="h-12 w-12 flex-shrink-0 border-2 border-slate-200 dark:border-slate-600 shadow-lg">
+          <div className={`flex items-center overflow-hidden transition-all duration-300 ${isExpanded ? 'gap-3' : 'justify-center'}`}>
+            <Avatar className={`flex-shrink-0 border-2 border-slate-200 dark:border-slate-600 shadow-lg transition-all duration-300 ${isExpanded ? 'h-12 w-12' : 'h-10 w-10'}`}>
               <AvatarImage src={user?.user_metadata?.avatar_url} alt="Avatar" />
               <AvatarFallback className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white font-bold text-sm">{user?.email?.[0].toUpperCase()}</AvatarFallback>
             </Avatar>

@@ -10,37 +10,37 @@ const testimonials = [
     quote: "Esta plataforma ha transformado por completo nuestra estrategia de marketing digital. Hemos incrementado nuestras conversiones en un 45% en solo tres meses.",
     author: "Elena Rodríguez",
     position: "CMO, TechVision Inc.",
-    avatar: "/images/avatars/avatar-1.png"
+    avatar: "/images/avatars/avatar-1.svg"
   },
   {
     quote: "La facilidad de uso combinada con análisis detallados nos permite optimizar campañas en tiempo real. Una herramienta indispensable para cualquier equipo de marketing.",
     author: "Carlos Mendoza",
     position: "Director de Marketing Digital, GlobalRetail",
-    avatar: "/images/avatars/avatar-2.png"
+    avatar: "/images/avatars/avatar-2.svg"
   },
   {
     quote: "El asistente de IA ha mejorado significativamente la calidad de nuestras campañas, generando contenido relevante y atractivo que resuena con nuestra audiencia.",
     author: "Marta Sánchez",
     position: "Especialista en Campañas, CreativeAgency",
-    avatar: "/images/avatars/avatar-3.png"
+    avatar: "/images/avatars/avatar-3.svg"
   },
   {
     quote: "La capacidad de segmentación y las herramientas de automatización nos han permitido escalar nuestras operaciones sin sacrificar la personalización.",
     author: "Javier López",
     position: "CEO, StartupGrowth",
-    avatar: "/images/avatars/avatar-4.png"
+    avatar: "/images/avatars/avatar-4.svg"
   },
   {
     quote: "Después de probar múltiples plataformas, esta es definitivamente la más intuitiva y completa. La relación calidad-precio es inmejorable.",
     author: "Ana Torres",
     position: "Directora de Publicidad, MediaGroup",
-    avatar: "/images/avatars/avatar-5.png"
+    avatar: "/images/avatars/avatar-5.svg"
   },
   {
     quote: "El soporte al cliente es excepcional. Cualquier consulta o problema se resuelve en cuestión de minutos. Un equipo verdaderamente comprometido.",
     author: "Ricardo Gómez",
     position: "Gerente de Marketing, InnoTech",
-    avatar: "/images/avatars/avatar-6.png"
+    avatar: "/images/avatars/avatar-6.svg"
   },
 ]
 
