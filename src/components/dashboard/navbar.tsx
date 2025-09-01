@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, Settings, Target, Building, LogOut, LayoutDashboard, Briefcase, UserCircle, BarChart3, Users, Zap, Menu, X } from 'lucide-react'
+import Image from 'next/image'
 import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -71,11 +72,11 @@ export function Navbar() {
             {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center gap-3 font-bold whitespace-nowrap group">
-                <div className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-2 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110">
-                  <Target className="h-6 w-6 text-white flex-shrink-0" />
+                <div className="p-1 rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-110">
+                  <Image src="/logo.svg" alt="MarketingIA Logo" width={32} height={32} className="flex-shrink-0" />
                 </div>
                 <span className="font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent text-xl hidden sm:block">
-                  CampaignBuilder
+                  POCKET
                 </span>
               </Link>
             </div>
