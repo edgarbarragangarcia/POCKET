@@ -12,6 +12,7 @@ type AuthContextType = {
   isLoading: boolean
   signUp: (email: string, password: string) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
+  signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
   updatePassword: (password: string) => Promise<void>
@@ -133,6 +134,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           variant: "destructive",
         })
       }
+      throw error
+    }
+  }
+
+  const signInWithGoogle = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+
+      if (error) {
+        throw error
+      }
+
+      // La redirección será manejada automáticamente por Supabase
+      toast({
+        title: "Redirigiendo a Google",
+        description: "Serás redirigido a Google para iniciar sesión...",
+      })
+    } catch (error: any) {
+      logger.error('Error signing in with Google', error)
+      toast({
+        title: "Error al iniciar sesión con Google",
+        description: error?.message || "No se pudo conectar con Google. Inténtalo de nuevo.",
+        variant: "destructive",
+      })
       throw error
     }
   }
@@ -275,6 +305,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isLoading,
     signUp,
     signIn,
+    signInWithGoogle,
     signOut,
     resetPassword,
     updatePassword,
