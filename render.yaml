@@ -9,8 +9,8 @@ services:
       - key: NODE_VERSION
         value: 20
       - key: NEXT_PUBLIC_SUPABASE_URL
-        value: https://kklnzclrsexprjwgbbsv.supabase.co
+        value: https://epudfdzrxyannpfbydkp.supabase.co
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtrbG56Y2xyc2V4cHJqd2diYnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NjgyNjYsImV4cCI6MjA3MTU0NDI2Nn0.30vZo6HG0xCzy8Bj1KoO64J8Ynak0CNjA1ZEmhHS6qE
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwdWRmZHpyeHlhbm5wZmJ5ZGtwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYxNDY3NTksImV4cCI6MjA3MTcyMjc1OX0.cAc9vz-DEaWJgsq6fOHeBUvRdh-Gll_pn5EBKQhk5fA
       - key: SUPABASE_SERVICE_ROLE_KEY
-        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtrbG56Y2xyc2V4cHJqd2diYnN2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5NjgyNjYsImV4cCI6MjA3MTU0NDI2Nn0.30vZo6HG0xCzy8Bj1KoO64J8Ynak0CNjA1ZEmhHS6qE
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwdWRmZHpyeHlhbm5wZmJ5ZGtwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjE0Njc1OSwiZXhwIjoyMDcxNzIyNzU5fQ.TKf3qq-nczwtK6gs-KGUHM0Xl4d3u_bbyVvdR_3cj_k
